@@ -1,28 +1,26 @@
 //Login in EZUPP
 const { test, expect } = require('@playwright/test');
+//importing class flies
 const { LoginPage } = require('../pageLevel/loginPage');
+const { LaunchApp} = require('../pageLevel/launchAppPage');
+const {UnitPage} = require ('../pageLevel/unitPage');
+// importing data files
+const {userLoginData} = require('../data/userData.json'); 
+const {applicationData} = require('../data/url.json')
 
 test('Verification of valid Email Id', async ({ page }) => {
 
+  //Create loginPage object of class LoginPage
   const loginPage = new LoginPage(page);
+  const launchApp = new LaunchApp(page);
+  const unitPage = new UnitPage(page);
 
-  await page.goto('http://91.205.173.97:8600/login');
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Ezupp Pannel/);
-  await page.waitForTimeout(6000);
-  await expect(page).toHaveURL('http://91.205.173.97:8600/login');
-  await loginPage.login('ipankajkumarlpu@gmail.com','Pankaj@12345')
-  await page.getByRole('button',{name: 'Masters'}).click();
-  await page.waitForTimeout(6000);
-  await page.getByRole('button',{name: 'Unit'}).click();
-  await page.waitForTimeout(6000);
-  await page.getByRole('button',{name: 'CREATE'}).first().click();
-  await page.waitForTimeout(6000);
-  await page.getByLabel('Unit Name').click();
-  await page.getByLabel('Unit Name').fill('Tinku');
-  await page.getByLabel('Is General').check();
-  await page.getByRole('button',{name:'SUBMIT'}).click();
+  console.log("launch application");
+  await launchApp.launchApplication(applicationData.url)
+  //login Page object accessing the login method
+  await loginPage.login(userLoginData.userEmailID, userLoginData.password);
+  //await unitPage.createUnit('Kilo')
   
-
+console.log();
 });
 
